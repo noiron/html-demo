@@ -59,7 +59,7 @@ setPoints();
 
 var vehicles = [];
 
-for (var i = 0; i < 150; i++) {
+for (var i = 0; i < 100; i++) {
     var mass = Math.random() * 4 + 1;
 
     var vehicle = new Vehicle(vec2.fromValues(WIDTH*Math.random(), HEIGHT*Math.random()), mass);
