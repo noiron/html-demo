@@ -29,7 +29,7 @@ var astar = {
             }
             var currentNode = openList[lowIndex];
 
-            console.log(currentNode.pos.x, currentNode.pos.y);
+            //console.log(currentNode.pos.x, currentNode.pos.y);
 
             // End case -- result has been found, return the traced path
             //if (currentNode.pos == end.pos) {
@@ -121,7 +121,7 @@ function GraphNode(x, y, type) {
     this.x = x;
     this.y = y;
     this.pos = { x:x, y:y};
-    this.type = type;
+    this.type = type;   // type == 0 means you can pass, type == 1 means block
     this.debug = "";
 }
 
@@ -129,8 +129,8 @@ GraphNode.prototype.toString = function() {
     return "[" + this.x + " " + this.y + "]";
 };
 
-GraphNode.prototype.getElement = function() {
-    return this.$element;
+GraphNode.prototype.getType = function() {
+    return this.type;
 };
 
 GraphNode.prototype.isWall = function() {
