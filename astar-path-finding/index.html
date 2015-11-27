@@ -10,13 +10,24 @@
             margin-left: auto;
             margin-right: auto;
         }
+
+        fieldset {
+            width: 400px;
+        }
     </style>
 </head>
 <body>
     <canvas id="drawing" width="400px" height="400px" onclick="onClick(event)" onmousemove="mouseMove(event)"></canvas>
+    <!--<div id="controls">-->
+        <!--<input type="button" onclick="placeBlock()" value="Place Block" id="placeblock">-->
+        <!--<input type="button" onclick="beginSearch()" value="Search" id="search">-->
+    <!--</div>-->
+
     <div id="controls">
-        <input type="button" onclick="placeBlock()" value="Place Block" id="placeblock">
-        <input type="button" onclick="beginSearch()" value="Search" id="search">
+        <fieldset>
+            <label>Block <input type="radio" id="radio1" name="inputType" value="Block" onclick="placeBlock()"> </label>
+            <label>Search <input type="radio" id="radio2" name="inputType" value="Search" onclick="beginSearch()"> </label>
+        </fieldset>
     </div>
 
     <script src="astar.js"></script>

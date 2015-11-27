@@ -1,4 +1,4 @@
-var size = 15;
+var size = 10;
 
 var map = [];
 var blocks = [];
@@ -29,12 +29,10 @@ function init() {
         for (var y = 0; y < size; y++) {
             var newGrid = new GraphNode(x, y, 0);
             row.push(newGrid);
-           //if ((x !== start.x || y !== start.y) && (x !== end.x || y !== end.y)) {
-            //if (start.pos !== newGrid.pos && end.pos !== newGrid.pos) {
-                if (Math.random() <  wallFrequency ) {
-                    row[y].type = 1;
-                    blocks.push(newGrid);
-               // }
+
+            if (Math.random() <  wallFrequency ) {
+                row[y].type = 1;
+                blocks.push(newGrid);
             }
         }
         map.push(row);
@@ -129,7 +127,11 @@ function onClick(e) {
 }
 
 function placeBlock() {
-    blockReady = ! blockReady;
+    blockReady = document.getElementById("radio1").checked;
+}
+
+function beginSearch() {
+    blockReady = document.getElementById("radio1").checked;
 }
 
 function draw() {
