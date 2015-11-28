@@ -1,8 +1,8 @@
-var size = 10;
+var size = 15;
 
 var map = [];
 var blocks = [];
-var wallFrequency = 0.1;
+var wallFrequency = 0.15;
 
 var canvas = document.getElementById("drawing");
 var context = canvas.getContext("2d");
@@ -16,6 +16,7 @@ var mapWidth = size*(gridWidth+1);
 var xSelect = 0, ySelect = 0;
 
 var blockReady = false;
+var beginSearch = true;
 var pathChanged = true;
 //var start = new GraphNode(0, 0, 0);
 //var end = new GraphNode(Math.floor(Math.random()*size), Math.floor(Math.random()*size), 0);
@@ -118,20 +119,25 @@ function onClick(e) {
                 map[xSelect][ySelect].type = 0;
             }
         }
-
         //if (newBlock in path) {
             pathChanged = true;
         //}
         return false;
     }
+
+    else if(beginSearch) {
+        start = end;
+        end = map[xSelect][ySelect];
+        start.type = 0;
+        end.type = 0;
+        path = astar.search(map, start, end);
+        pathChanged = false;
+    }
 }
 
 function placeBlock() {
     blockReady = document.getElementById("radio1").checked;
-}
-
-function beginSearch() {
-    blockReady = document.getElementById("radio1").checked;
+    beginSearch = document.getElementById("radio2").checked;
 }
 
 function draw() {
@@ -142,13 +148,15 @@ function draw() {
     // TODO: only when path changed, search the path again
     if (pathChanged) {
         path = astar.search(map, start, end);
-        pathChanged = false;
+       // pathChanged = false;
     }
 
     drawPath();
 
     if (blockReady) {
         fillGrid(xSelect, ySelect, "gray");
+    } else if(beginSearch) {
+        fillGrid(xSelect, ySelect, "#998822");
     }
 
     drawBlocks();
@@ -171,6 +179,35 @@ function drawBoard() {
         context.lineTo(mapWidth, i * gridWidth + i);
     }
     context.stroke();
+}
+
+function generateMap() {
+    while (blocks.length !== 0) {
+        blocks[0].type = 0;
+        blocks.removeGraphNode(blocks[0]);
+    }
+    for (var x = 0; x < size; x++) {
+        for (var y = 0; y < size; y++) {
+            if (Math.random() < wallFrequency) {
+                map[x][y].type = 1;
+                blocks.push(map[x][y]);
+            }
+        }
+    }
+
+    start = map[0][0];
+
+    // TODO: end shouldn't equal to start
+    end = map[Math.floor(Math.random()*size)][Math.floor(Math.random()*size)];
+    start.type = 0;
+    end.type = 0;
+    if (blocks.findGraphNode(start)) {
+        blocks.removeGraphNode(start);
+    }
+    if (blocks.findGraphNode(end)) {
+        blocks.removeGraphNode(end);
+    }
+    pathChanged = true;
 }
 
 
