@@ -5,6 +5,11 @@
     <title></title>
 
     <style>
+        #drawing {
+            position: relative;
+            margin: 20px auto 10px auto;
+        }
+
         #controls {
             margin-top: 20px;
             margin-left: auto;
@@ -14,10 +19,15 @@
         fieldset {
             width: 400px;
         }
+
+        #generateMap {
+            float: right;
+            margin:auto 50px auto auto;
+        }
     </style>
 </head>
 <body>
-    <canvas id="drawing" width="400px" height="400px" onclick="onClick(event)" onmousemove="mouseMove(event)"></canvas>
+    <canvas id="drawing" width="600px" height="600px" onclick="onClick(event)" onmousemove="mouseMove(event)"></canvas>
     <!--<div id="controls">-->
         <!--<input type="button" onclick="placeBlock()" value="Place Block" id="placeblock">-->
         <!--<input type="button" onclick="beginSearch()" value="Search" id="search">-->
@@ -26,8 +36,10 @@
     <div id="controls">
         <fieldset>
             <label>Block <input type="radio" id="radio1" name="inputType" value="Block" onclick="placeBlock()"> </label>
-            <label>Search <input type="radio" id="radio2" name="inputType" value="Search" onclick="beginSearch()"> </label>
+            <label>Search <input type="radio" id="radio2" name="inputType" value="Search" onclick="placeBlock()" checked="checked"> </label>
+            <button id="generateMap" onclick="generateMap()">Generate New Map</button>
         </fieldset>
+
     </div>
 
     <script src="astar.js"></script>
