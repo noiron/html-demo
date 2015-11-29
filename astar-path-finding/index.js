@@ -1,4 +1,4 @@
-var size = 15;
+var size = 3;
 
 var map = [];
 var blocks = [];
@@ -18,8 +18,7 @@ var xSelect = 0, ySelect = 0;
 var blockReady = false;
 var beginSearch = true;
 var pathChanged = true;
-//var start = new GraphNode(0, 0, 0);
-//var end = new GraphNode(Math.floor(Math.random()*size), Math.floor(Math.random()*size), 0);
+
 var start;
 var end;
 
@@ -145,10 +144,9 @@ function draw() {
 
     drawBoard();
 
-    // TODO: only when path changed, search the path again
     if (pathChanged) {
         path = astar.search(map, start, end);
-       // pathChanged = false;
+        pathChanged = false;
     }
 
     drawPath();
@@ -156,11 +154,10 @@ function draw() {
     if (blockReady) {
         fillGrid(xSelect, ySelect, "gray");
     } else if(beginSearch) {
-        fillGrid(xSelect, ySelect, "#998822");
+        fillGrid(xSelect, ySelect, "#944");
     }
 
     drawBlocks();
-
 }
 
 function drawBoard() {
@@ -182,10 +179,12 @@ function drawBoard() {
 }
 
 function generateMap() {
+    // Clear all blocks
     while (blocks.length !== 0) {
         blocks[0].type = 0;
         blocks.removeGraphNode(blocks[0]);
     }
+    // Generate new blocks
     for (var x = 0; x < size; x++) {
         for (var y = 0; y < size; y++) {
             if (Math.random() < wallFrequency) {
@@ -197,8 +196,14 @@ function generateMap() {
 
     start = map[0][0];
 
-    // TODO: end shouldn't equal to start
-    end = map[Math.floor(Math.random()*size)][Math.floor(Math.random()*size)];
+    // end shouldn't equal to start
+    do {
+        var randX = Math.floor(Math.random() * size);
+        var randY = Math.floor(Math.random() * size);
+    }
+    while (randX === start.x && randY === start.y);
+    end = map[randX][randY];
+
     start.type = 0;
     end.type = 0;
     if (blocks.findGraphNode(start)) {
