@@ -71,6 +71,7 @@ function BreadthFirstSearch(graph, start) {
     this.graph = graph;
     this.width = graph.width;
     this.height = graph.height;
+    this.start = start;
 
     var frontier = new Queue;
     frontier.put(start);
@@ -96,7 +97,6 @@ function BreadthFirstSearch(graph, start) {
 
     var current;
     var curNeighbors = [];
-    console.log(frontier.elements.length);
 
     while (frontier.elements.length !== 0) {
         current = frontier.get();
@@ -147,6 +147,21 @@ BreadthFirstSearch.prototype.showDistance = function() {
     console.log(info);
 };
 
+BreadthFirstSearch.prototype.findPath = function(id) {
+    var ret = [];
+    //var curr = [id[0], id[1]];
+    var curX = id[0];
+    var curY = id[1];
+    while(curX !== this.start[0] || curY !== this.start[1]) {
+        var x = this.came_from[curX][curY][0];
+        var y = this.came_from[curX][curY][1];
+        ret.push([x, y]);
+        curX = x;
+        curY = y;
+    }
+    return ret;
+};
+
 Array.prototype.hasArray = function(arr) {
     for (var i = 0; i < this.length; i++) {
         if (this[i][0] === arr[0] && this[i][1] === arr[1]) {
@@ -164,6 +179,7 @@ for (var i = 0; i < walls.length; i++) {
 }
 g.print();
 
-var bfs =new BreadthFirstSearch(g, [5,8]);
-bfs.showDistance();
-bfs.showPath();
+//var bfs =new BreadthFirstSearch(g, [5,8]);
+//bfs.showDistance();
+//bfs.showPath();
+//var path11 = bfs.findPath([1,1]);
