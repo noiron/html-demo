@@ -3,7 +3,6 @@ function Graph(w, h) {
     this.height = h;
     this.walls = [];
 
-    console.log("-----:", this.width);
 }
 
 /**
@@ -69,6 +68,9 @@ function Queue() {
 }
 
 function BreadthFirstSearch(graph, start) {
+    this.graph = graph;
+    this.width = graph.width;
+    this.height = graph.height;
 
     var frontier = new Queue;
     frontier.put(start);
@@ -76,30 +78,74 @@ function BreadthFirstSearch(graph, start) {
     var visited = [start];
 
     this.came_from = [];
-    this.came_from[start] = null;
 
-    var distance = [];
-    //distance[s]
+    for (var i = 0; i < this.height; i++) {
+        this.came_from[i] = [];
+        for (var j = 0; j < this.width; j++) {
+            this.came_from[i][j] = null;
+        }
+    }
+
+    this.distance = [];
+    for (i = 0; i < this.height; i++) {
+        this.distance[i] = [];
+        for (j = 0; j < this.width; j++) {
+            this.distance[i][j] = 0;
+        }
+    }
 
     var current;
-    var next = [];
+    var curNeighbors = [];
     console.log(frontier.elements.length);
 
     while (frontier.elements.length !== 0) {
         current = frontier.get();
+        // console.log(current[0], current[1]);
 
-        console.log(current[0], current[1]);
-
-        next = graph.neighbors(current);
-        for (var i = 0; i < next.length; i++) {
-
-            if (! visited.hasArray(next[i])) {
-                frontier.put(next[i]);
-                visited.push(next[i]);
+        curNeighbors = graph.neighbors(current);
+        for (i = 0; i < curNeighbors.length; i++) {
+            var next = curNeighbors[i];
+            if (! visited.hasArray(next)) {
+                frontier.put(next);
+                visited.push(next);
+                this.came_from[next[0]][next[1]]= current;
+                this.distance[next[0]][next[1]] = this.distance[current[0]][current[1]] + 1;
             }
         }
     }
 }
+
+BreadthFirstSearch.prototype.showPath = function(id) {
+    var info = "";
+    for (var j = 0; j < this.height; j++) {
+        for (var i = 0; i < this.width; i++) {
+            if (this.graph.walls.hasArray([i, j])) {
+                info += "#\t\t";
+            }
+            else {
+                info += this.came_from[i][j]+"\t\t";
+            }
+        }
+        info += "\n";
+    }
+    console.log(info);
+};
+
+BreadthFirstSearch.prototype.showDistance = function() {
+    var info = "";
+    for (var j = 0; j < this.graph.height; j++) {
+        for (var i = 0; i < this.graph.width; i++) {
+            if (this.graph.walls.hasArray([i, j])) {
+                info += "#\t";
+            }
+            else {
+                info += this.distance[i][j]+"\t";
+            }
+        }
+        info += "\n";
+    }
+    console.log(info);
+};
 
 Array.prototype.hasArray = function(arr) {
     for (var i = 0; i < this.length; i++) {
@@ -111,10 +157,13 @@ Array.prototype.hasArray = function(arr) {
 };
 
 g = new Graph(10, 10);
-var walls = [[1, 7], [1, 8], [2, 7], [2, 8], [3, 7], [3, 8], [0,0]];
+var walls = [[1, 7], [1, 8], [2, 7], [2, 8], [3, 7], [3, 8], [0,0],[6,2],
+            [6,3], [6,4]];
 for (var i = 0; i < walls.length; i++) {
     g.walls.push(walls[i]);
 }
 g.print();
 
-var bfs =new BreadthFirstSearch(g, [1,1]);
+var bfs =new BreadthFirstSearch(g, [5,8]);
+bfs.showDistance();
+bfs.showPath();
