@@ -91,7 +91,7 @@ function BreadthFirstSearch(graph, start) {
     for (i = 0; i < this.width; i++) {
         this.distance[i] = [];
         for (j = 0; j < this.height; j++) {
-            this.distance[i][j] = 0;
+            this.distance[i][j] = -1;
         }
     }
 
@@ -149,9 +149,9 @@ BreadthFirstSearch.prototype.showDistance = function() {
 
 BreadthFirstSearch.prototype.findPath = function(id) {
     var ret = [];
-    //var curr = [id[0], id[1]];
     var curX = id[0];
     var curY = id[1];
+    if (this.came_from[curX][curY] === null) {return [];}
     while(curX !== this.start[0] || curY !== this.start[1]) {
         var x = this.came_from[curX][curY][0];
         var y = this.came_from[curX][curY][1];
