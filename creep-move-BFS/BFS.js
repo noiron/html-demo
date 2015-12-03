@@ -80,17 +80,17 @@ function BreadthFirstSearch(graph, start) {
 
     this.came_from = [];
 
-    for (var i = 0; i < this.height; i++) {
+    for (var i = 0; i < this.width; i++) {
         this.came_from[i] = [];
-        for (var j = 0; j < this.width; j++) {
+        for (var j = 0; j < this.height; j++) {
             this.came_from[i][j] = null;
         }
     }
 
     this.distance = [];
-    for (i = 0; i < this.height; i++) {
+    for (i = 0; i < this.width; i++) {
         this.distance[i] = [];
-        for (j = 0; j < this.width; j++) {
+        for (j = 0; j < this.height; j++) {
             this.distance[i][j] = 0;
         }
     }
