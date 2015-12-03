@@ -27,12 +27,12 @@
     </style>
 </head>
 <body>
-    <canvas id="drawing" width="600px" height="600px" onclick="onClick(event)" onmousemove="mouseMove(event)"></canvas>
+    <canvas id="drawing" width="800px" height="800px" onclick="onClick(event)" onmousemove="mouseMove(event)"></canvas>
 
     <div id="controls">
         <fieldset>
-            <label>Block <input type="radio" id="radio1" name="inputType" value="Block" onclick="placeBlock()"> </label>
-            <label>Search <input type="radio" id="radio2" name="inputType" value="Search" onclick="placeBlock()" checked="checked"> </label>
+            <label>Block <input type="radio" id="radio1" name="inputType" value="Block" onclick="placeBlock()" checked="checked"> </label>
+            <label>Search <input type="radio" id="radio2" name="inputType" value="Search" onclick="placeBlock()" > </label>
             <button id="generateMap" onclick="generateMap()">Generate New Map</button>
         </fieldset>
 

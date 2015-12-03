@@ -6,9 +6,11 @@ var wallFrequency = 0.15;
 
 var canvas = document.getElementById("drawing");
 var context = canvas.getContext("2d");
+var WIDTH = window.innerWidth;
+var HEIGHT = window.innerHeight;
 
 var gridWidth = Math.floor((canvas.width -size) / size);
-var gridHeight = Math.floor((canvas.width -size) / size);
+var gridHeight = Math.floor((canvas.height -size) / size);
 
 var mapHeight = size*(gridHeight+1);
 var mapWidth = size*(gridWidth+1);
@@ -21,6 +23,8 @@ var pathChanged = true;
 
 var start;
 var end;
+
+var creepTest = new Creep();
 
 function init() {
 
@@ -49,7 +53,8 @@ function init() {
         blocks.removeGraphNode(end);
     }
 
-    var path = astar.search(map, start, end);
+    //path = astar.search(map, start, end);
+
 
 }
 
@@ -72,15 +77,15 @@ function drawPath() {
 
     // Color the path
     for (i = 0; i < path.length; i++) {
-        fillGrid(path[i].x, path[i].y);
+        fillGrid(path[i].x, path[i].y, "#FF9900");
     }
 
-    fillGrid(end.x, end.y, "pink");
+    fillGrid(end.x, end.y, "#FFCC00");
 }
 
 function drawBlocks() {
     for (i = 0; i < blocks.length; i++) {
-        fillGrid(blocks[i].x, blocks[i].y, "black");
+        fillGrid(blocks[i].x, blocks[i].y, "#666");
     }
 }
 
@@ -158,13 +163,19 @@ function draw() {
     }
 
     drawBlocks();
+
+    creepTest.update();
+    creepTest.draw();
 }
 
 function drawBoard() {
+    context.fillStyle = "#3388bb";
     context.clearRect(0, 0, canvas.width, canvas.height);
+    context.fillRect(0, 0, mapWidth, mapHeight);
 
     context.beginPath();
     // Draw vertical lines
+    context.fillStyle = "#ccc";
     for (var i = 0; i < size+1; i++) {
         context.moveTo(i * (gridWidth + 1), 0);
         context.lineTo(i * (gridWidth + 1), mapHeight);
@@ -215,4 +226,86 @@ function generateMap() {
     pathChanged = true;
 }
 
+function Creep() {
 
+    this.xPos = findGridCenter(0, 0).x;
+    this.yPos = findGridCenter(0, 0).y;
+    this.speed = 0.1;
+    this.radius = 10;
+    this.dead = false;
+
+    this.proportion = 0;
+    // Which grid it's in
+    this.xIndex = Math.floor(this.xPos / (gridWidth+1));
+    this.yIndex = Math.floor(this.yPos / (gridHeight+1));
+
+    var currentIndex = 0;
+    var currentGrid;
+    var nextGrid = 0;
+
+    this.draw = function () {
+        if (this.dead === true) {
+            return;
+        }
+        drawCircle(this.xPos, this.yPos, this.radius, "rgb(220, 0, 0)");
+    };
+
+    this.update = function() {
+
+        // this grid's index in the path
+        if (this.xIndex === 0 && this.yIndex === 0) {
+            currentIndex = -1;
+            currentGrid = start;
+            nextGrid = path[0];
+        } else {
+            if (path.findGraphNode(map[this.xIndex][this.yIndex])) {
+                currentIndex = path.indexOf(path.findGraphNode(map[this.xIndex][this.yIndex]));
+                currentGrid = path[currentIndex];
+                nextGrid = path[currentIndex + 1];
+            }
+            else {
+                //alert("...");
+            }
+        }
+
+        var dx = findGridCenter(nextGrid.x, nextGrid.y).x - findGridCenter(currentGrid.x, currentGrid.y).x;
+        var dy = findGridCenter(nextGrid.x, nextGrid.y).y - findGridCenter(currentGrid.x, currentGrid.y).y;
+        var dis = Math.abs(dx) + Math.abs(dy);
+
+        if (this.proportion < 1) {
+            this.proportion += this.speed / dis;
+        } else {
+            this.proportion = 0;
+            this.xPos = findGridCenter(nextGrid.x, nextGrid.y).x;
+            this.yPos = findGridCenter(nextGrid.x, nextGrid.y).y;
+
+            // Which grid it's in
+            this.xIndex = Math.floor(this.xPos / (gridWidth+1));
+            this.yIndex = Math.floor(this.yPos / (gridHeight+1));
+
+            currentIndex = path.indexOf(path.findGraphNode(map[this.xIndex][this.yIndex]));
+            currentGrid = map[this.xIndex][this.yIndex];
+        }
+
+
+        this.xPos= (findGridCenter(currentGrid.x, currentGrid.y).x + dx * this.proportion);
+        this.yPos = (findGridCenter(currentGrid.x, currentGrid.y).y + dy * this.proportion);
+
+
+    }
+}
+
+function drawCircle(x, y, radius, color) {
+    context.fillStyle = color;
+    context.beginPath();
+    context.arc(x, y, radius, 0, Math.PI * 2, true);
+    context.closePath();
+    context.fill();
+}
+
+function findGridCenter(xIndex, yIndex) {
+    var xPos = Math.floor((xIndex * (gridWidth+1)) + gridWidth * 0.5);
+    var yPos = Math.floor((yIndex * (gridHeight+1)) + gridHeight * 0.5);
+
+    return {x: xPos, y: yPos};
+}
