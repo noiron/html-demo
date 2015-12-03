@@ -171,6 +171,16 @@ Array.prototype.hasArray = function(arr) {
     return false;
 };
 
+Array.prototype.removeArray = function(arr) {
+    for (var i = 0; i < this.length; i++) {
+        if (this[i][0] === arr[0] && this[i][1] === arr[1]) {
+            this.splice(i, 1);
+            return true;
+        }
+    }
+    return false;
+};
+
 g = new Graph(10, 10);
 var walls = [[1, 7], [1, 8], [2, 7], [2, 8], [3, 7], [3, 8], [0,0],[6,2],
             [6,3], [6,4]];
