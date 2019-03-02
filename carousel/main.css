@@ -1,0 +1,66 @@
+#container {
+  border: 1px solid #eee;
+  width: 600px;
+  height: 500px;
+  background: #eee;
+  position: relative;
+}
+
+div.banner {
+  margin-top: 30px;
+  background: #000;
+  color: #fff;
+  text-align: center;
+  font-size: 30px;
+  padding: 10px 0;
+  position: relative;
+  height: 40px;
+  text-align: center;
+}
+
+.banner-text {
+  transition: 0.3s ease-in;
+  display: block;
+  text-align: center;
+  margin: 0 auto;
+  opacity: 1;
+  position: absolute;
+  width: 100%;
+}
+
+.banner-text.slide-in {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.banner-text.slide-out {
+  transform: translateY(100%);
+  opacity: 0;
+}
+
+.album-image {
+  opacity: 1;
+  display: block;
+  max-width: 400px;
+  margin: 50px auto;
+}
+
+.album-image.fade-in {
+  opacity: 1;
+  animation: fadeIn 0.3s ease-in;
+}
+
+.album-image.fade-out {
+  opacity: 0;
+  animation: fadeOut 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
