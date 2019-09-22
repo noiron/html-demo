@@ -12,23 +12,23 @@ const textList = [
   '第三个标题'
 ];
 
-const fadeLastTime = 300;  // 淡入/淡出需要的时间
-const steadyTime = 2000;  // 文字或图片稳定显示的时间
+const fadeDuraton = 300;  // 淡入/淡出需要的时间
+const steadyDuration = 2000;  // 文字或图片稳定显示的时间
 
-addSlideEffect(imageNode, bannerNode, fadeLastTime, steadyTime);
+addSlideEffect(imageNode, bannerNode, fadeDuraton, steadyDuration);
 
-function addSlideEffect(imageNode, bannerNode, fadeLastTime, steadyTime) {
+function addSlideEffect(imageNode, bannerNode, fadeDuraton, steadyDuration) {
   let index = 1;
   let textIndex = 0;
   const imageListLen = imageSrcList.length;
 
   setInterval(() => {
-    
+    // 以下是图片的变化部分
     // 图片显示一段时间后，开始隐藏
     setTimeout(() => {
       imageNode.classList.remove('fade-in')
       imageNode.classList.add('fade-out')
-    }, steadyTime);
+    }, steadyDuration);
   
     // 替换新的图片地址
     setTimeout(() => {
@@ -37,11 +37,10 @@ function addSlideEffect(imageNode, bannerNode, fadeLastTime, steadyTime) {
   
       imageNode.classList.remove('fade-out')
       imageNode.classList.add('fade-in')
-    }, fadeLastTime + steadyTime);
-  
-  }, fadeLastTime * 2 + steadyTime)
-  
-  setInterval(() => {
+    }, fadeDuraton + steadyDuration);
+
+
+    // 以下是文字的变化部分
     // 当前文字正常显示
     bannerNode.style.opacity = 1;
     bannerNode.style.transform = 'translateY(0)';
@@ -50,17 +49,17 @@ function addSlideEffect(imageNode, bannerNode, fadeLastTime, steadyTime) {
     setTimeout(() => {
       bannerNode.style.opacity = 0;
       bannerNode.style.transform = 'translateY(100%)';
-    }, steadyTime)
-    
+    }, steadyDuration);
+
     // 更换文字内容，并在不可见的情况下将其移动至上方
     setTimeout(() => {
-      textIndex = (textIndex + 1) % textList.length; 
+      textIndex = (textIndex + 1) % textList.length;
       bannerNode.innerHTML = textList[textIndex];
-  
-    bannerNode.style.opacity = 0;
+
+      bannerNode.style.opacity = 0;
       bannerNode.style.transform = 'translateY(-100%)';
-    }, steadyTime + fadeLastTime)
+    }, steadyDuration + fadeDuraton);
   
-  }, steadyTime + fadeLastTime * 2) 
+  }, fadeDuraton * 2 + steadyDuration);
 }
 
