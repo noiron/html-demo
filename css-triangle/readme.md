@@ -1,0 +1,1 @@
+Use CSS to generate an isosceles triangle.
