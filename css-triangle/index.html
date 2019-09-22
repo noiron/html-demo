@@ -20,11 +20,15 @@
     #triangle {
       margin: 20px;
     }
-
     #box {
       margin: 20px;
       padding: 10px;
       text-align: center;
+    }
+    #github-ribbon {
+      position: fixed;
+      top: 0;
+      right: 0;
     }
   </style>
 </head>
@@ -33,6 +37,7 @@
   <span>Base：</span><input id="base-input" value=150 type="number" />
   <span>Height：</span><input id="height-input" value=150 type="number" />
   <span>Rotate degree：</span><input id="rotate-degree" value=0 type="number" />
+  <span>Color: </span>
 
   <pre>
       #triangle {
@@ -48,6 +53,10 @@
   <div id="box">
     <div id="triangle"></div>
   </div>
+
+  <a href="https://github.com/noiron/html-demo/tree/master/css-triangle" id="github-ribbon">
+    <img width="149" height="149" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_white_ffffff.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1">
+  </a>
 
   <script src="index.js"></script>
 </body>
