@@ -2,7 +2,8 @@
 const initBase = 200;
 const initHeight = 100;
 const initRotate = 0;
-let base = 0, height = 0, rotate = 0;
+const initColor = '#ADD8E6'; // lightblue
+let base = 0, height = 0, rotate = 0, color;
 
 function set() {
   const styleStr = `
@@ -11,7 +12,7 @@ function set() {
     height: 0px;
     border-left: ${base / 2}px solid transparent;
     border-right: ${base / 2}px solid transparent;
-    border-bottom: ${height}px solid lightblue;
+    border-bottom: ${height}px solid ${color};
     border-top: none;
     transform: rotate(${rotate}deg);
   }
@@ -28,6 +29,7 @@ function init() {
   base = initBase;
   height = initHeight;
   rotate = initRotate;
+  color = initColor;
 
   const $baseInput = document.getElementById('base-input');
   $baseInput.addEventListener('input', (e) => {
@@ -44,6 +46,12 @@ function init() {
   const $rotateInput = document.getElementById('rotate-degree');
   $rotateInput.addEventListener('input', (e) => {
     rotate = e.target.value;
+    set();
+  });
+
+  const $colorInput = document.getElementById('color-input');
+  $colorInput.addEventListener('input', (e) => {
+    color = e.target.value;
     set();
   });
 
